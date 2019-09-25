@@ -1,0 +1,48 @@
+
+#include <opencv2/opencv.hpp>
+#include "highgui.h"
+#include <iostream>
+#include<fstream>
+using namespace std;
+using namespace cv;
+int nImages=1491;
+void main()
+{
+	//加载图像名到数组中
+	char **img_name_index = new char *[nImages]; // load image names of Ukbench
+	ifstream inf_img ("..\\data\\img_name.txt", ios_base::in);
+	if(!inf_img) return;
+	for (int n = 0; n < nImages; n++)
+	{
+	    img_name_index[n] = new char[100];
+	    if (!img_name_index[n]) break;
+	    inf_img.getline(img_name_index[n], 32);
+	}
+	inf_img.close();
+	for(int i=0;i<nImages;i++)
+	{
+	    cout<<i+1<<endl;
+	    char temp[100]="\0";
+	    char result_img[100]="\0";
+	    sprintf(temp,"..\\images\\%s",img_name_index[i]);
+	    IplImage *src;
+            src = cvLoadImage(temp);
+    
+	    IplImage* gray_image;  
+            gray_image = cvCreateImage(cvGetSize(src),8,1);    
+            cvCvtColor(src,gray_image,CV_BGR2GRAY); 
+	  
+	    IplImage* norm_image;  
+            CvSize norm_cvsize;  
+            norm_cvsize.width = 480;  //目标图像的宽    
+            norm_cvsize.height = 640; //目标图像的高  
+ 
+            norm_image = cvCreateImage(norm_cvsize, gray_image->depth,gray_image->nChannels); //构造目标图象  
+            cvResize(gray_image, norm_image, CV_INTER_LINEAR); //缩放源图像到目标图像 
+	    sprintf(result_img,"..\\new_image\\%d.jpg",i+1);
+	    cvSaveImage(result_img, norm_image);//cvSaveImage("norm.jpg", norm_image); //保存归一化图像到本地文件夹下
+            cvReleaseImage(&norm_image);
+	    cvReleaseImage(&src);
+	    cvReleaseImage(&gray_image);
+	}
+}
