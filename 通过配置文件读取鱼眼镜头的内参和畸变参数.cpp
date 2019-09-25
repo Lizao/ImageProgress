@@ -177,3 +177,29 @@ int main() {
 	getchar();
 	return 0;
 }
+
+
+
+
+
+
+/*string path;
+	readMatrix ptr_a = readMatrix(path);
+	ptr_a.getMatrix();
+	Mat image = imread("a.jpg", 1);
+	Size image_size = image.size();
+	Mat mapx = Mat(image_size, CV_32FC1);
+	Mat mapy = Mat(image_size, CV_32FC1);
+	Mat R = Mat::eye(3, 3, CV_32F);
+	int x_expand = 0, y_expand = 0;
+	imshow("输入图片", image);
+	Mat testImage;
+	copyMakeBorder(image, testImage, (int)(y_expand / 2), (int)(y_expand / 2), (int)(x_expand / 2), (int)(x_expand / 2), BORDER_CONSTANT);
+	fisheye::initUndistortRectifyMap(ptr_a.intrinsic_matrix, ptr_a.distortion_coeffs, R, ptr_a.intrinsic_matrix, image_size, CV_32FC1, mapx, mapy);
+	Mat t = testImage.clone();
+	cv::remap(testImage, t, mapx, mapy, INTER_LINEAR);
+
+	imwrite("TestOutput.jpg", t);
+	imshow("TestOutput.jpg", t);
+	cout << "保存结束" << endl;*/
+
