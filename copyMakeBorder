@@ -1,0 +1,70 @@
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <iostream>
+ 
+using namespace std;
+using namespace cv;
+ 
+ 
+ 
+ 
+int main()
+{
+	Mat image, result;
+	//获得边界的类型
+	int borderType = BORDER_REPLICATE;
+	//输入字符
+	int c;
+ 
+	image = imread("D:6.jpg");
+	if (!image.data)
+	{
+		printf("fail to load image\n");
+		return -1;
+	}
+	//使用说明
+	cout << "使用说明：" << endl;
+	cout << "按键c设置边界为随机的颜色" << endl;
+	cout << "按键r设置边界为原图的颜色" << endl;
+	cout << "按键按键ESC退出程序" << endl;
+ 
+	//颜色随机值
+	Scalar value;
+	//随机数种子
+	RNG rng(12345);
+	//初始化参数：边框的粗细
+	int top = (int)(0.05*image.rows);
+	int bottom = (int)(0.05*image.rows);
+	int left = (int)(0.05*image.cols);
+	int right = (int)(0.05*image.cols);
+ 
+	result = image;
+	//imshow("显示结果",result);
+ 
+	while (true)
+	{
+		c = waitKey(500);
+		if ((char)c == 27)
+		{
+			break;
+		}
+		else if ((char)c == 'c')
+		{
+			//用常数添加边框（255：白色）
+			borderType = BORDER_CONSTANT;
+		}
+		else if ((char)c == 'r')
+		{
+			//复制原图像的边界像素
+			borderType = BORDER_REPLICATE;
+		}
+ 
+		//设置随机颜色
+		value = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
+		//在图像周围形成边界：输入图像、输出图像（大小为源图像+边界）、上、下、左、右、边界类型、颜色
+		copyMakeBorder(image, result, top, bottom, left, right, borderType, value);
+		imshow("显示结果", result);
+	}
+ 
+}
